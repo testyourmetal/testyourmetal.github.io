@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Your Metal — Iron Screening for Student-Athletes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red-deep: #8B1A1A;
+    --red-mid: #B22234;
+    --red-light: #E8C4C0;
+    --red-wash: #FDF5F4;
+    --cream: #FFFAF8;
+    --text: #2D2424;
+    --text-secondary: #5C4A4A;
+    --white: #FFFFFF;
+    --accent: #C1440E;
+    --gold: #D4940A;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--text);
+    background: var(--cream);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,250,248,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(139,26,26,0.08);
+    padding: 0.9rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  nav .logo { font-weight: 800; font-size: 1.1rem; color: var(--red-deep); letter-spacing: -0.02em; }
+  nav .logo span { color: var(--accent); }
+  nav ul { list-style: none; display: flex; gap: 1.8rem; }
+  nav ul li a {
+    text-decoration: none; color: var(--text-secondary); font-size: 0.88rem;
+    font-weight: 500; transition: color 0.2s;
+  }
+  nav ul li a:hover { color: var(--red-mid); }
+
+  @media (max-width: 680px) {
+    nav ul { display: none; }
+    nav { padding: 0.9rem 1.2rem; }
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center;
+    padding: 6rem 2rem 4rem;
+    background: linear-gradient(160deg, var(--cream) 0%, var(--red-wash) 50%, var(--red-light) 100%);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -20%; right: -10%;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(178,34,52,0.06) 0%, transparent 70%);
+  }
+  .hero-badge {
+    display: inline-block; padding: 0.4rem 1rem; border-radius: 50px;
+    background: rgba(178,34,52,0.08); color: var(--red-mid);
+    font-size: 0.82rem; font-weight: 600; letter-spacing: 0.04em;
+    text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 800;
+    line-height: 1.1; letter-spacing: -0.03em; max-width: 700px;
+    color: var(--red-deep);
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    margin-top: 1.4rem; font-size: 1.15rem; color: var(--text-secondary);
+    max-width: 560px; line-height: 1.7;
+  }
+  .hero-cta {
+    margin-top: 2.2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+  }
+  .btn {
+    display: inline-block; padding: 0.85rem 2rem; border-radius: 8px;
+    text-decoration: none; font-weight: 600; font-size: 0.95rem;
+    transition: all 0.25s;
+  }
+  .btn-primary { background: var(--red-mid); color: var(--white); }
+  .btn-primary:hover { background: var(--red-deep); transform: translateY(-1px); }
+  .btn-secondary { background: transparent; color: var(--red-mid); border: 2px solid var(--red-mid); }
+  .btn-secondary:hover { background: rgba(178,34,52,0.06); }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px; background: var(--red-deep);
+  }
+  .stat-item {
+    background: var(--white); padding: 2.2rem 1.5rem; text-align: center;
+  }
+  .stat-item .number {
+    font-size: 2.4rem; font-weight: 800; color: var(--red-mid);
+    letter-spacing: -0.03em;
+  }
+  .stat-item .label {
+    margin-top: 0.3rem; font-size: 0.85rem; color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  /* SECTIONS */
+  section { padding: 5rem 2rem; }
+  .container { max-width: 760px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--red-mid); margin-bottom: 0.8rem;
+  }
+  section h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800;
+    letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1.5rem;
+    color: var(--red-deep);
+  }
+  section p { margin-bottom: 1.2rem; color: var(--text-secondary); font-size: 1rem; }
+
+  /* STORY SECTION */
+  .story-section { background: var(--red-wash); }
+  .story-card {
+    background: var(--white); border-radius: 16px; padding: 2.5rem;
+    border-left: 4px solid var(--red-mid);
+    box-shadow: 0 4px 24px rgba(139,26,26,0.06);
+  }
+  .story-card blockquote {
+    font-size: 1.1rem; font-style: italic; color: var(--text);
+    line-height: 1.8; margin-bottom: 1rem;
+  }
+  .story-card .attribution { font-size: 0.9rem; font-weight: 600; color: var(--red-mid); }
+
+  /* PROBLEM SECTION */
+  .problem-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem; margin-top: 2rem;
+  }
+  .problem-card {
+    background: var(--white); border-radius: 12px; padding: 1.8rem;
+    border: 1px solid rgba(139,26,26,0.08);
+    box-shadow: 0 2px 12px rgba(139,26,26,0.04);
+  }
+  .problem-card h3 {
+    font-size: 1.05rem; font-weight: 700; color: var(--red-deep);
+    margin-bottom: 0.6rem;
+  }
+  .problem-card p { font-size: 0.92rem; margin-bottom: 0; }
+
+  /* ASK SECTION */
+  .ask-section { background: var(--red-deep); color: var(--white); }
+  .ask-section .section-label { color: var(--red-light); }
+  .ask-section h2 { color: var(--white); }
+  .ask-section p { color: rgba(255,255,255,0.8); }
+  .ask-list { margin-top: 1.5rem; }
+  .ask-item {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 1.2rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .ask-item:last-child { border-bottom: none; }
+  .ask-number {
+    flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.12); display: flex; align-items: center;
+    justify-content: center; font-weight: 700; font-size: 0.9rem; color: var(--red-light);
+  }
+  .ask-item h3 { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.3rem; }
+  .ask-item p { font-size: 0.92rem; color: rgba(255,255,255,0.7); margin-bottom: 0; }
+
+  /* EVIDENCE */
+  .evidence-list { margin-top: 1.5rem; }
+  .evidence-item {
+    padding: 1rem 0; border-bottom: 1px solid rgba(139,26,26,0.08);
+    font-size: 0.95rem;
+  }
+  .evidence-item:last-child { border-bottom: none; }
+  .evidence-item .source {
+    display: block; margin-top: 0.3rem; font-size: 0.82rem;
+    color: var(--red-mid); font-weight: 500;
+  }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    background: linear-gradient(160deg, var(--red-wash) 0%, var(--cream) 100%);
+  }
+  .cta-section h2 { color: var(--red-deep); }
+  .cta-section p { max-width: 520px; margin-left: auto; margin-right: auto; }
+  .cta-buttons { margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  /* RESOURCES */
+  .resources-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.2rem; margin-top: 1.5rem;
+  }
+  .resource-card {
+    background: var(--white); border-radius: 10px; padding: 1.5rem;
+    border: 1px solid rgba(139,26,26,0.08);
+    transition: box-shadow 0.2s;
+  }
+  .resource-card:hover { box-shadow: 0 4px 16px rgba(139,26,26,0.08); }
+  .resource-card h3 { font-size: 0.95rem; font-weight: 700; color: var(--red-deep); margin-bottom: 0.4rem; }
+  .resource-card p { font-size: 0.85rem; margin-bottom: 0.6rem; }
+  .resource-card a {
+    font-size: 0.85rem; color: var(--red-mid); font-weight: 600;
+    text-decoration: none;
+  }
+  .resource-card a:hover { text-decoration: underline; }
+
+  /* FOOTER */
+  footer {
+    text-align: center; padding: 2.5rem 2rem;
+    border-top: 1px solid rgba(139,26,26,0.08);
+    font-size: 0.82rem; color: var(--text-secondary);
+  }
+  footer a { color: var(--red-mid); text-decoration: none; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--red-light); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Test Your <span>Metal</span></div>
+  <ul>
+    <li><a href="#problem">The Problem</a></li>
+    <li><a href="#story">My Story</a></li>
+    <li><a href="#ask">What We Want</a></li>
+    <li><a href="#evidence">Evidence</a></li>
+    <li><a href="#action">Take Action</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">Student-Athlete Advocacy Project</div>
+  <h1> <span>Test Your Metal</span></h1>
+  <p>Iron deficiency affects nearly 1 in 3 female highschool athletes. It degrades athletic preformance, damages academic ability, and brings extreme energy loss, all of which may create lifelong consequences. Despite this, very few individuals and groups screen for this condition, our goal is to combat and adress this disregard.</p>
+  <div class="hero-cta">
+    <a href="#ask" class="btn btn-primary">See What We're Asking For</a>
+    <a href="#story" class="btn btn-secondary">My Experience</a>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="number">25%</div>
+    <div class="label">of female athletes are iron deficient</div>
+  </div>
+  <div class="stat-item">
+    <div class="number">60%</div>
+    <div class="label">of female athletes in endurance sports are iron defficient</div>
+  </div>
+  <div class="stat-item">
+    <div class="number">$20</div>
+    <div class="label">the approximate cost of a ferritin test that could catch this condition</div>
+  </div>
+  <div class="stat-item">
+    <div class="number">28 mg</div>
+    <div class="label">the daily iron recomendation for a female athlete, which is often not reached</div>
+  </div>
+  <div class="stat-item">
+    <div class="number" >30%</div>
+    <div class="label">of females of childbearing age worldwide experience iron defficiency</div>
+  </div>
+  <div class="stat-item">
+    <div class="number">13%</div>
+    <div class="label">of females worldwide are estimated to have iron defficiency anemia</div>
+  </div>
+</div>
+
+<section id="problem">
+  <div class="container">
+    <div class="section-label">The Problem</div>
+    <h2>A common condition frequently overlooked</h2>
+    <p>Iron deficiency is the most common nutritional deficiency in the United States. Adolescent girls are among the most vulnerable, and female athletes face an even higher risk. Still under 3% of female athletes test for iron deficiency despite an estimated 45% experiencing this condition.</p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <h3>Menstruation + Athletics = a significantly higher risk</h3>
+        <p> Monthly blood loss diminishes iron stores, leading to iron deficiency. Rigorous training means your muscles need more oxygen and you need more energy. Iron has the job of helping build the proteins in red blood cells that bring oxygen to your muscles. Inflammation from exercise reduces iron absorption, often leading to iron deficiency.</p>
+      </div>
+      <div class="problem-card">
+        <h3>You don't need to be anemic to suffer</h3>
+        <p>Anemia is a severe form of iron deficiency. Low iron impairs endurance, cognition, mood, and recovery ability long before iron and hemoglobin drop to levels of anemia. Research shows that supplementing non-anemic, low-iron athletes improves their performance significantly.</p>
+      </div>
+      <div class="problem-card">
+        <h3>Symptoms Get Dismissed</h3>
+        <p>Fatigue, slow recovery, brain fog, and lethargy are frequently written off as overtraining, stress, or just “being a teenager”. This disregarding means the cause behind these symptoms may remain hidden for far too long.</p>
+      </div>
+      <div class="problem-card">
+        <h3>The Sports Physical Doesn't Look</h3>
+        <p>Anemia testing is not required as part of a pre-participation physical evaluation in nearly all areas. This means anemia goes unnoticed throughout the current examination process.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="story" class="story-section">
+  <div class="container">
+    <div class="section-label">My Story</div>
+    <h2>I lived it and I don't want anyone else to</h2>
+    <div class="story-card">
+      <blockquote>
+        <!-- PERSONALIZE: Replace this with the student's own story. Be specific — 
+             the details are what make it real. When did symptoms start? What did coaches 
+             or doctors say? How long before diagnosis? What changed after treatment? 
+             What did you miss out on? -->
+        "During my freshaman and sophmore years, I began to struggle to make it through a single training without overwhelming fatigue. I used to breeze through, and have fun but this feeling changed it all. My times got slower, I lost focus, and I began to fall behind my teamates. Soccer wasn't the only thing I fell behind in, I began to drop grades in school, spend less time with friends, and loose out on countless moments. I was sleeping ten hours a night, tried to fule well and still struggled to stay awake or even feel like myself. I was told I needed to try harder, eat better, manage my stress, not once suggested a blood test. It took two years and over 10 doctors visits before a simple blood test revealed what was really going on: severe iron-deficiency anemia. I had been running my life on ferretin levels of 3 ng/ml and heimoglobin levels of 4 g/dL (the recomended levels for NON athletes is 30-250 ng/ml and 12-16 g/dL respectively). Within 2 weeks of starting treatment, I felt like a completely different person and this change was noticed by all around me. But I had already lost [describe what was lost over a year of training and was left with damedges to my heart and other organs. I am forever greatful that a coach recomended I get tested at the hospital but I always wish I had know a $20 blood test could have caught this before it ever got that bad.
+      </blockquote>
+      <div class="attribution">— Stella Eisen, Soccer </div>
+    </div>
+  </div>
+</section>
+<section id="ask" class="ask-section">
+  <div class="container">
+    <div class="section-label">What We're Asking For</div>
+    <h2>Three simple, low-cost changes</h2>
+    <p>We hope schools and physicians include a simple, well-established iron deficiency screening test into the conversation of physical readiness.</p>
+    <div class="ask-list">
+      <div class="ask-item">
+        <div class="ask-number">1</div>
+        <div>
+          <h3>Add ferritin screening to sports physicals for female athletes</h3>
+          <p>Recommending that female athletes request a serum ferritin test from their physician during their annual physical. Not required for all individuals getting a check-up but required in these circumstances.</p>
+        </div>
+      </div>
+      <div class="ask-item">
+        <div class="ask-number">2</div>
+        <div>
+          <h3>Use a meaningful threshold</h3>
+          <p>The “normal” ranges of ferritin and hemoglobin are set below the optimal range for an active athlete. A ferritin level below 30ng/mL is recommended to trigger a follow up visit with a healthcare provider, as this is the lowest level of ferritin an athlete should have according the current sports medicine research.</p>
+        </div>
+      </div>
+      <div class="ask-item">
+        <div class="ask-number">3</div>
+        <div>
+          <h3>Educate athletes, families, and coaches</h3>
+          <p>Provide information about the signs, risks, and methods of prevention to help early symptoms be both recognized and treated.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="evidence">
+  <div class="container">
+    <div class="section-label">The Evidence</div>
+    <h2>Research on the matter is clear and concrete</h2>
+    <p>Decades of published research support screening for iron deficiency in female athletes. Here are some of the key findings:</p>
+    <div class="evidence-list">
+      <div class="evidence-item">
+        Iron supplementation improves endurance performance even in women who are iron-depleted but <em>not yet anemic</em> — proving that you don't need to be severely ill to be harmed by low iron.
+        <span class="source">Brownlie et al., American Journal of Clinical Nutrition, 2004</span>
+      </div>
+      <div class="evidence-item">
+        Iron-depleted female collegiate rowers showed measurably impaired performance at the start of their training season compared to iron-sufficient teammates.
+        <span class="source">DellaValle & Haas, Int'l J of Sport Nutrition and Exercise Metabolism, 2011</span>
+      </div>
+      <div class="evidence-item">
+        The International Olympic Committee recognizes iron status as a key health parameter that should be monitored in athletes at risk of Relative Energy Deficiency in Sport (RED-S).
+        <span class="source">IOC Consensus Statement, British Journal of Sports Medicine, 2018</span>
+      </div>
+      <div class="evidence-item">
+        Exercise triggers increases in hepcidin — a hormone that blocks iron absorption — for hours after training, making it harder for athletes to maintain iron stores through diet alone.
+        <span class="source">Sim et al., European Journal of Applied Physiology, 2019</span>
+      </div>
+      <div class="evidence-item">
+        Most adolescent girls fail to meet the recommended 15 mg/day of dietary iron — a target that increases during puberty precisely when many girls begin restricting their diets.
+        <span class="source">NIH Office of Dietary Supplements — Iron Fact Sheet for Health Professionals</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="action" class="cta-section">
+  <div class="container">
+    <div class="section-label">Take Action</div>
+    <h2>Help combat iron defficiency </h2>
+    <p>Decades of published research supports screening for iron deficiency in female athletes, here are some of the key findings:</p>
+    <div class="problem-grid" style="text-align:left; margin-top:1.5rem;">
+      <div class="problem-card">
+        <h3>If you're a student-athlete</h3>
+        <p>if you feel any of the common symptoms of iron deficiency, ask your doctor for a ferritin test at your next physical. Talk to friends and teammates about iron and if you have experienced this deficiency, share your story!</p>
+      </div>
+      <div class="problem-card">
+        <h3>If you're a parent</h3>
+        <p>Request a ferritin test for your child, especially if they are participating in an endurance sport. Learn about ways to spot iron deficiency and help educate those around you.</p>
+      </div>
+      <div class="problem-card">
+        <h3>If you're a coach or trainer</h3>
+        <p>Learn the signs of iron deficiency well. When an athlete’s performance drops or fatigue seems disproportionate to those around them, consider referring them to a ferritin test.</p>
+      </div>
+      <div class="problem-card">
+        <h3>If you're an administrator</h3>
+        <p>recommend ferritin screening to you’re district’s athletics physical requirements. Help provide resources in the area for this testing to be more accessible. We’d love to discuss the logistics!</p>
+      </div>
+  <div class="container">
+    <div class="section-label">Take Action</div>
+    <h2> Quick things to keep in mind</h2>
+    <p> In the case you, or someone close to you finds themselves in the situation of iron defficiency there are many easily recognizable symptoms and things to do if you notice them:</p>
+    <h2>If you experience any of these symptoms look to get tested</h2>
+    <div class="problem-grid" style="text-align:left; margin-top:1.5rem;">
+      <div class="problem-card">
+        <h3>External</h3>
+        <p>Pale or yellow skin/lack of color in the face, inner iyelids, or nail beds. Unexplained hair loss or cracks at the corners of the mouth. Frequently cold hands and feet, espessially when others are not feeling this way. </p>
+        <h3>Internal</h3>
+        <p>Moderate to extreme fatigue or weakness, headaches, lightheadedness, difficulty concentrating and thinking clearly, abnormally rapid heart rate, chest pain, and shortness of breath.</p>
+      </div>
+    </div>
+    </div>
+    <h2>Ask your phisician about taking an iron supplement and try to implement iron rich foods into your diet </h2>
+    <div class="problem-grid" style="text-align:left; margin-top:1.5rem;">
+      <div class="problem-card">
+        <h3>Meats</h3>
+        <p>Organs, shellfish (clams, oysters, mussels), red meat (beef, bison, lamb), and various forms of fish </p>
+        <h3>Other foods </h3>
+        <p>legumes (lentils, chickpeas, black beans, kidney beans), soy products (tofu, tempeh), seeds/nuts (pumpkin, sesame, cashews, almonds), greens (spinach and kale), and fortified breakfast cereals that can have 90-100% of the DV of iron including cheerios, soecial K and quaker oatmeal.  </p>
+    
+
+      
+
+
+        </div>
+
+    <div class="cta-buttons">
+      <!-- PERSONALIZE: Add a real email or contact form link -->
+      <a href="mailto:testyouriron@gmail.com" class="btn btn-primary">Get in Touch</a>
+      <a href="#evidence" class="btn btn-secondary">Read the Research</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-label">Resources</div>
+    <h2>Learn more</h2>
+    <div class="resources-grid">
+      <div class="resource-card">
+        <h3>NIH Iron Fact Sheet</h3>
+        <p>Comprehensive overview of iron requirements, deficiency, and health impacts from the Office of Dietary Supplements.</p>
+        <a href="https://ods.od.nih.gov/factsheets/Iron-HealthProfessional/" target="_blank">Read at NIH.gov &rarr;</a>
+      </div>
+      <div class="resource-card">
+        <h3>IOC RED-S Consensus (2018)</h3>
+        <p>The International Olympic Committee's framework for understanding energy deficiency in sport, including iron status.</p>
+        <a href="https://bjsm.bmj.com/content/52/11/687" target="_blank">Read at BJSM &rarr;</a>
+      </div>
+      <div class="resource-card">
+        <h3>Iron and Endurance Performance</h3>
+        <p>The landmark Brownlie et al. study showing that iron depletion impairs performance even without anemia.</p>
+        <a href="https://doi.org/10.1093/ajcn/79.3.437" target="_blank">Read at AJCN &rarr;</a>
+      </div>
+      <div class="resource-card">
+        <h3>Iron Considerations for Athletes</h3>
+        <p>A comprehensive narrative review of iron metabolism, loss mechanisms, and management in athletic populations.</p>
+        <a href="https://doi.org/10.1007/s00421-019-04157-y" target="_blank">Read at EJAP &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Test Your Metal</strong> is a student-led advocacy project promoting iron deficiency screening for female student-athletes.</p>
+  <p style="margin-top:0.5rem;">Questions or want to get involved? <a href="mailto:testyouriron@gmail.com">hello@testyourmetal.org</a></p>
+  <p style="margin-top:0.5rem;">&copy; 2026 Test Your Metal. This site is for informational purposes and does not constitute medical advice.</p>
+</footer>
+
+</body>
+</html>
